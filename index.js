@@ -86,51 +86,93 @@
     </div>
 
 <script>
+    // --- 1. 基本設定 ---
     let globalPass = "";
-    // RenderのURLに合わせて自動設定
-    const host = window.location.host;
-
+    
+    // --- 2. 認証ロジック ---
     function unlock() {
-        const p = document.getElementById('pass-input').value;
+        const input = document.getElementById('pass-input');
+        const p = input.value;
+        
+        // パスコードチェック
         if(p === "adomin") {
             globalPass = p;
             document.getElementById('auth-section').style.display = "none";
             document.getElementById('main-content').style.display = "block";
+            console.log("Terminal Access Granted.");
         } else {
-            alert("認証に失敗しました");
+            input.style.border = "1px solid #ff453a"; // エラー時に赤くする
+            alert("認証に失敗しました。正しいパスコードを入力してください。");
+            input.value = "";
         }
     }
 
+    // --- 3. アップロードロジック ---
     async function startUpload() {
-        const file = document.getElementById('actual-file').files[0];
+        const fileInput = document.getElementById('actual-file');
+        const file = fileInput.files[0];
+        const dropText = document.getElementById('drop-text');
+        
         if (!file) return;
-        document.getElementById('drop-text').innerText = "同期中...";
+
+        // UIの状態を「同期中」に更新
+        dropText.innerText = "同期中...";
+        dropText.style.color = "var(--apple-blue)";
 
         const reader = new FileReader();
         reader.onload = async (e) => {
             const base64Data = e.target.result.split(',')[1];
+            
             try {
+                // index.jsの /log-check エンドポイントへ送信
                 const response = await fetch('/log-check', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: file.name, content: base64Data, pass: globalPass })
+                    body: JSON.stringify({ 
+                        name: file.name, 
+                        content: base64Data, 
+                        pass: globalPass 
+                    })
                 });
+
                 if (response.ok) {
                     const data = await response.json();
+                    
+                    // 結果表示
                     document.getElementById('url-result').style.display = 'block';
                     document.getElementById('download-url').value = data.url;
-                    document.getElementById('drop-text').innerText = "同期完了";
+                    
+                    dropText.innerText = "同期完了";
+                    dropText.style.color = "#34c759"; // Appleの成功カラー（グリーン）
+                } else {
+                    throw new Error('Server returned error');
                 }
-            } catch (err) { alert("同期エラー"); }
+            } catch (err) {
+                console.error("Upload Error:", err);
+                alert("同期エラーが発生しました。サーバーの状態を確認してください。");
+                dropText.innerText = "タップして同期";
+                dropText.style.color = "var(--text-white)";
+            }
         };
+        
+        reader.onerror = () => alert("ファイルの読み込みに失敗しました。");
         reader.readAsDataURL(file);
     }
 
+    // --- 4. ユーティリティ ---
     function copyURL() {
-        const url = document.getElementById("download-url");
-        url.select();
-        navigator.clipboard.writeText(url.value);
-        alert("URLをコピーしました");
+        const urlInput = document.getElementById("download-url");
+        urlInput.select();
+        urlInput.setSelectionRange(0, 99999); // モバイル対応
+
+        navigator.clipboard.writeText(urlInput.value)
+            .then(() => {
+                const copyBtn = event.target;
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = "完了";
+                setTimeout(() => copyBtn.innerText = originalText, 2000);
+            })
+            .catch(() => alert("コピーに失敗しました。"));
     }
 </script>
 </body>
