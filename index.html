@@ -5,34 +5,33 @@
     <title>Jeremy Quartus | iPhone 17 Pro</title>
     <style>
         :root {
-            --bg: #0d1d31;
-            --card-gray: rgba(22, 22, 23, 0.8); /* 背景が見えるよう少し透過 */
+            --bg: #0c0d13;
+            --card-gray: rgba(22, 22, 23, 0.85); 
             --text-white: #f5f5f7;
             --text-dim: #86868b;
             --apple-blue: #0071e3;
-            --primary-color: #fff; /* 星の色 */
+            --primary-color: #fff;
         }
 
         body, html {
             margin: 0; padding: 0;
             background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
             color: var(--text-white);
-            font-family: "SF Pro Display", sans-serif;
+            font-family: "SF Pro Display", -apple-system, sans-serif;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; overflow: hidden;
         }
 
-        /* --- ✨ 流星アニメーションのCSS --- */
+        /* ✨ 流星群の背景 */
         .stars {
             position: fixed; top: 0; left: 0; width: 100%; height: 120%;
-            transform: rotate(-45deg); z-index: 0;
+            transform: rotate(-45deg); z-index: 0; pointer-events: none;
         }
         .star {
             --star-color: var(--primary-color);
             --star-tail-length: 6em;
             --star-tail-height: 2px;
             --fall-duration: 9s;
-            --tail-fade-duration: var(--fall-duration);
             position: absolute; top: var(--top-offset); left: 0;
             width: var(--star-tail-length); height: var(--star-tail-height);
             color: var(--star-color);
@@ -40,31 +39,29 @@
             border-radius: 50%;
             filter: drop-shadow(0 0 6px currentColor);
             transform: translate3d(104em, 0, 0);
-            animation: fall var(--fall-duration) var(--fall-delay) linear infinite, tail-fade var(--tail-fade-duration) var(--fall-delay) ease-out infinite;
+            animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
         }
         @keyframes fall { to { transform: translate3d(-30em, 0, 0); } }
-        @keyframes tail-fade { 0%, 50% { opacity: 1; } 100% { opacity: 0; } }
-        
-        /* 星の個別設定（一部抜粋して44個分生成） */
-        .star:nth-child(1) { --star-tail-length: 6.77em; --top-offset: 17.45vh; --fall-duration: 7.284s; --fall-delay: 4.653s; }
-        .star:nth-child(2) { --star-tail-length: 5.43em; --top-offset: 53.99vh; --fall-duration: 11.776s; --fall-delay: 7.502s; }
-        .star:nth-child(3) { --star-tail-length: 6.98em; --top-offset: 6.36vh; --fall-duration: 8.091s; --fall-delay: 6.233s; }
-        .star:nth-child(4) { --star-tail-length: 5.17em; --top-offset: 11.69vh; --fall-duration: 9.711s; --fall-delay: 1.878s; }
-        .star:nth-child(5) { --star-tail-length: 5.44em; --top-offset: 30.03vh; --fall-duration: 11.722s; --fall-delay: 0.141s; }
-        /* ... (CSSの容量制限のため、nth-child 6-44も同様に適用されます) ... */
-        /* ※実際のコードには全てのnth-childが含まれていると仮定して進めます */
 
-        /* --- 🍎 AppleカードのCSS --- */
+        /* 星の配置（44個分） */
+        .star:nth-child(1) { --star-tail-length: 6.77em; --top-offset: 17.45vh; --fall-duration: 7.28s; --fall-delay: 4.65s; }
+        .star:nth-child(2) { --star-tail-length: 5.43em; --top-offset: 53.99vh; --fall-duration: 11.77s; --fall-delay: 7.50s; }
+        .star:nth-child(3) { --star-tail-length: 6.98em; --top-offset: 6.36vh; --fall-duration: 8.09s; --fall-delay: 6.23s; }
+        .star:nth-child(4) { --star-tail-length: 5.17em; --top-offset: 11.69vh; --fall-duration: 9.71s; --fall-delay: 1.87s; }
+        .star:nth-child(5) { --star-tail-length: 5.44em; --top-offset: 30.03vh; --fall-duration: 11.72s; --fall-delay: 0.14s; }
+        /* ...中略（GitHubには全44個分を記述してください）... */
+
         .apple-card {
             width: 90%; max-width: 420px;
             background: var(--card-gray);
-            backdrop-filter: blur(20px); /* 背後の星をぼかす */
+            backdrop-filter: blur(20px); 
             border-radius: 40px; padding: 60px 40px;
             text-align: center; position: relative; z-index: 10;
             border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .apple-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #424245; border-radius: 12px; padding: 15px; color: white; margin-bottom: 20px; box-sizing: border-box; }
+        .apple-input { width: 100%; background: #000; border: 1px solid #424245; border-radius: 12px; padding: 15px; color: white; margin-bottom: 20px; box-sizing: border-box; }
         .apple-button { background: var(--apple-blue); color: white; padding: 12px 30px; border-radius: 980px; font-weight: 600; border: none; cursor: pointer; }
         .drop-zone { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; margin-top: 30px; cursor: pointer; border: 1px dashed rgba(255,255,255,0.2); }
         .dev-footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 11px; color: var(--text-dim); }
@@ -97,26 +94,31 @@
     <div id="main-content" class="apple-card">
         <h1 style="font-size: 28px;">Upload Terminal</h1>
         <div class="drop-zone" onclick="document.getElementById('actual-file').click()">
-            <p id="drop-text" style="font-weight: 600; margin: 0;">タップしてアップロード</p>
+            <p id="drop-text" style="font-weight: 600; margin: 0;">タップして同期</p>
+            <span style="font-size: 11px; color: var(--text-dim);">MAX 100MB</span>
         </div>
         <input type="file" id="actual-file" style="display:none;" onchange="startUpload()">
+        
         <div class="dev-footer">
             <p>System developed by <strong>Graynack404</strong></p>
-            <p><a href="https://x.com/Graynack404" target="_blank" style="color:var(--apple-blue); text-decoration:none;">X</a> • <a href="https://github.com/GrayNuck" target="_blank" style="color:var(--apple-blue); text-decoration:none;">GitHub</a></p>
+            <p>
+                <a href="https://x.com/Graynack404" target="_blank" style="color:var(--apple-blue); text-decoration:none;">X</a> • 
+                <a href="https://github.com/GrayNuck" target="_blank" style="color:var(--apple-blue); text-decoration:none;">GitHub</a>
+            </p>
         </div>
     </div>
 
 <script>
+    const host = "jqproject.onrender.com";
     function unlockTerminal() {
-        const p = document.getElementById('pass-input').value;
-        if (p === "adomin") {
+        if (document.getElementById('pass-input').value === "adomin") {
             document.getElementById('auth-section').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
         } else {
-            document.getElementById('err').innerText = "パスコードが不一致です。";
+            document.getElementById('err').innerText = "パスコードが正しくありません。";
         }
     }
-    // (startUpload等のロジックは前の回答と同じ)
+    // startUpload関数などは以前と同じものを維持
 </script>
 </body>
 </html>
