@@ -10,17 +10,19 @@ const ADMIN_PASS = process.env.ADMIN_PASS || "adomin";
 app.use(express.json({ limit: '50mb' }));
 app.use('/files', express.static(UPLOAD_DIR));
 
-// --- ここを追加 ---
-// Renderの「死活監視」に応答する（これでErrorが消えます）
+// ★ ここがポイント：URLにアクセスした時にHTMLを表示する
 app.get('/', (req, res) => {
-    res.send('Jeremy Quartus Terminal: Online');
+    // GitHubにある index.html を読み込んで表示する
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
-// -----------------
 
-// 毎日12:59に全削除
+// Renderの死活監視用
+app.get('/healthz', (req, res) => res.status(200).send('OK'));
+
+// 12:59に全削除
 cron.schedule('59 12 * * *', async () => {
     await fs.emptyDir(UPLOAD_DIR);
-    console.log('Purge complete at 12:59');
+    console.log('Purge complete');
 }, { timezone: "Asia/Tokyo" });
 
 app.post('/log-check', async (req, res) => {
