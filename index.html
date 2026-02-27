@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeremy Quartus</title>
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --primary: #6366f1; --accent: #a855f7; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
+        .container { width: 90%; max-width: 400px; background: var(--card); padding: 2.5rem; border-radius: 28px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 18px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.8rem; box-shadow: 0 10px 20px rgba(99,102,241,0.3); }
+        input { width: 100%; padding: 14px; margin-bottom: 1.5rem; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: opacity 0.3s; }
+        button:hover { opacity: 0.9; }
+        
+        /* メイン画面のスタイル */
+        #main-content { display: none !important; }
+        .drop-zone { border: 2px dashed #334155; border-radius: 20px; padding: 3rem 1rem; cursor: pointer; transition: 0.3s; margin-top: 1rem; }
+        .drop-zone:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
+        .status-tag { color: #4ade80; font-size: 0.75rem; margin-top: 15px; font-weight: bold; }
+        
+        .dev-link { margin-top: 2.5rem; display: block; font-size: 0.7rem; color: #64748b; text-decoration: none; border-top: 1px solid #334155; padding-top: 1.5rem; transition: color 0.3s; }
+        .dev-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div id="auth-overlay" style="display: flex;">
+    <div class="container">
+        <div class="logo">JQ</div>
+        <h1>Terminal Login</h1>
+        <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 2rem;">System Encrypted. Identification required.</p>
+        <input type="password" id="pass-input" placeholder="Passcode" onkeydown="if(event.key==='Enter') unlockTerminal()">
+        <button onclick="unlockTerminal()">Connect to Node</button>
+        <div id="err" style="color: #ef4444; margin-top: 15px; font-size: 0.8rem;"></div>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="container">
+        <div class="logo">JQ</div>
+        <h1>Jeremy Quartus</h1>
+        <p style="color: #94a3b8; font-size: 0.8rem;">Ready to sync memories.</p>
+        
+        <div class="drop-zone" onclick="alert('Node Server is offline. Please deploy on Render.')">
+            <p style="font-weight: bold;">Tap to Sync Terminal</p>
+            <span style="font-size: 0.65rem; color: #64748b;">PDF / IMG / MOV (MAX 10MB)</span>
+        </div>
+        
+        <div class="status-tag">● NODE CONNECTED</div>
+
+        <a href="https://x.com/Graynack404" target="_blank" class="dev-link">
+            System developed by 不具合などの連絡はこちらのDMにお願いします。 @Graynack404
+        </a>
+    </div>
+</div>
+
+<script>
+function unlockTerminal() {
+    const p = document.getElementById('pass-input').value;
+    const overlay = document.getElementById('auth-overlay');
+    const main = document.getElementById('main-content');
+    const err = document.getElementById('err');
+
+    // 'adomin' で判定
+    if (p === "adomin") {
+        overlay.style.setProperty('display', 'none', 'important');
+        main.style.setProperty('display', 'block', 'important');
+    } else {
+        err.innerText = "Access Denied. Invalid Passcode.";
+    }
+}
+</script>
+
+</body>
+</html>
