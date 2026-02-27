@@ -2,27 +2,28 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Jeremy Quartus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeremy Quartus | Terminal</title>
     <style>
         :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --primary: #6366f1; --accent: #a855f7; --success: #4ade80; }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .container { width: 90%; max-width: 400px; background: var(--card); padding: 2.5rem; border-radius: 28px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .container { width: 90%; max-width: 400px; background: var(--card); padding: 2.5rem; border-radius: 28px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 18px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.8rem; box-shadow: 0 10px 20px rgba(99,102,241,0.3); }
-        input { width: 100%; padding: 14px; margin-bottom: 1.5rem; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; box-sizing: border-box; }
+        h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.025em; }
+        .motto { color: #94a3b8; font-size: 0.8rem; margin: 0.5rem 0 2rem; }
+        input { width: 100%; padding: 14px; margin-bottom: 1.5rem; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; box-sizing: border-box; font-size: 1rem; }
         button { width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: opacity 0.3s; }
         button:hover { opacity: 0.9; }
         
         #main-content { display: none !important; }
-        .drop-zone { border: 2px dashed #334155; border-radius: 20px; padding: 3rem 1rem; cursor: pointer; transition: 0.3s; margin-top: 1rem; }
+        .drop-zone { border: 2px dashed #334155; border-radius: 20px; padding: 3rem 1rem; cursor: pointer; transition: 0.3s; margin-top: 1rem; position: relative; }
         .drop-zone:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
-        .status-tag { color: var(--success); font-size: 0.75rem; margin-top: 15px; font-weight: bold; }
+        .status-tag { color: var(--success); font-size: 0.75rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; }
         
-        /* URL結果エリア */
-        #url-result { display: none; margin-top: 20px; padding: 15px; background: #0f172a; border-radius: 12px; border: 1px solid var(--primary); animation: fadeIn 0.5s; }
-        #download-url { margin: 10px 0; font-size: 0.8rem; background: transparent; border: none; color: var(--success); cursor: text; }
-        .copy-btn { padding: 8px; font-size: 0.7rem; background: var(--card); border: 1px solid var(--primary); margin-top: 5px; }
-
-        .dev-link { margin-top: 2.5rem; display: block; font-size: 0.7rem; color: #64748b; text-decoration: none; border-top: 1px solid #334155; padding-top: 1.5rem; transition: color 0.3s; }
+        #url-result { display: none; margin-top: 20px; padding: 15px; background: #0f172a; border-radius: 12px; border: 1px solid var(--primary); animation: fadeIn 0.5s ease-out; }
+        #download-url { margin: 10px 0; font-size: 0.8rem; background: transparent; border: none; color: var(--success); width: 100%; text-align: center; font-family: monospace; }
+        
+        .dev-link { margin-top: 2.5rem; display: block; font-size: 0.7rem; color: #64748b; text-decoration: none; border-top: 1px solid #334155; padding-top: 1.5rem; line-height: 1.4; }
         .dev-link:hover { color: var(--primary); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -30,11 +31,11 @@
 </head>
 <body>
 
-<div id="auth-overlay" style="display: flex;">
+<div id="auth-overlay">
     <div class="container">
         <div class="logo">JQ</div>
         <h1>Terminal Login</h1>
-        <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 2rem;">System Encrypted. Identification required.</p>
+        <p class="motto">System Encrypted. Identification required.</p>
         <input type="password" id="pass-input" placeholder="Passcode" onkeydown="if(event.key==='Enter') unlockTerminal()">
         <button onclick="unlockTerminal()">Connect to Node</button>
         <div id="err" style="color: #ef4444; margin-top: 15px; font-size: 0.8rem;"></div>
@@ -45,10 +46,10 @@
     <div class="container">
         <div class="logo">JQ</div>
         <h1>Jeremy Quartus</h1>
-        <p id="motto-text" style="color: #94a3b8; font-size: 0.8rem;">Ready to sync memories.</p>
+        <p class="motto">Ready to sync memories.</p>
         
         <div class="drop-zone" onclick="document.getElementById('actual-file').click()">
-            <p id="drop-text" style="font-weight: bold;">Tap to Sync Terminal</p>
+            <p id="drop-text" style="font-weight: bold; margin: 5px 0;">Tap to Sync Terminal</p>
             <span style="font-size: 0.65rem; color: #64748b;">PDF / IMG / MOV (MAX 50MB)</span>
         </div>
         <input type="file" id="actual-file" style="display:none;" onchange="startUpload()">
@@ -56,19 +57,21 @@
         <div id="url-result">
             <p style="font-size: 0.7rem; color: #94a3b8; margin: 0;">Download URL (Expires at 12:59):</p>
             <input type="text" id="download-url" readonly>
-            <button class="copy-btn" onclick="copyURL()">Copy URL</button>
+            <button onclick="copyURL()" style="padding: 8px; font-size: 0.7rem; background: var(--card); border: 1px solid var(--primary); width: auto; display: inline-block;">Copy URL</button>
         </div>
         
         <div id="status-tag" class="status-tag">● NODE CONNECTED</div>
 
         <a href="https://x.com/Graynack404" target="_blank" class="dev-link">
-            System developed by @Graynack404<br>不具合などの連絡はこちらのDMにお願いします。
+            Developed by @Graynack404<br>
+            不具合などの連絡はこちらのDMにお願いします。
         </a>
     </div>
 </div>
 
 <script>
 let globalPass = "";
+const host = "jqproject.onrender.com"; // あなたのRenderドメイン
 
 function unlockTerminal() {
     const p = document.getElementById('pass-input').value;
@@ -85,60 +88,59 @@ async function startUpload() {
     const file = document.getElementById('actual-file').files[0];
     if (!file) return;
 
-    // UI状態の更新
     const dropText = document.getElementById('drop-text');
     const statusTag = document.getElementById('status-tag');
+    
     dropText.innerText = "Syncing...";
-    statusTag.innerText = "● UPLOADING DATA...";
+    statusTag.innerText = "● UPLOADING...";
     statusTag.style.color = "var(--primary)";
-
-    // RenderのURLに書き換えてください
-    const host = "jqproject.onrender.com";
 
     const reader = new FileReader();
     reader.onload = async (e) => {
         const base64Data = e.target.result.split(',')[1];
-        const payload = {
-            name: file.name,
-            content: base64Data,
-            pass: globalPass
-        };
-
         try {
             const response = await fetch(`https://${host}/log-check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ 
+                    name: file.name, 
+                    content: base64Data, 
+                    pass: globalPass 
+                })
             });
 
             if (response.ok) {
                 const data = await response.json();
-                // URLの表示
                 document.getElementById('url-result').style.display = 'block';
                 document.getElementById('download-url').value = data.url;
-                
                 dropText.innerText = "Sync Complete";
                 statusTag.innerText = "● DATA CLOUD SYNCED";
                 statusTag.style.color = "var(--success)";
             } else {
-                throw new Error();
+                const errText = await response.text();
+                alert(`Error ${response.status}: Renderの環境設定を確認してください。`);
+                resetUI();
             }
         } catch (err) {
-            alert("Upload Failed. Make sure Render is LIVE.");
-            dropText.innerText = "Tap to Sync Terminal";
-            statusTag.innerText = "● CONNECTION ERROR";
-            statusTag.style.color = "#ef4444";
+            alert("Network Error: サーバーがスリープ中かURLが間違っています。");
+            resetUI();
         }
     };
     reader.readAsDataURL(file);
 }
 
+function resetUI() {
+    document.getElementById('drop-text').innerText = "Tap to Sync Terminal";
+    document.getElementById('status-tag').innerText = "● NODE CONNECTED";
+    document.getElementById('status-tag').style.color = "var(--success)";
+}
+
 function copyURL() {
     const copyText = document.getElementById("download-url");
     copyText.select();
-    copyText.setSelectionRange(0, 99999); 
+    copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
-    alert("URL copied!");
+    alert("Copied to clipboard!");
 }
 </script>
 
