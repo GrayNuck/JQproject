@@ -4,24 +4,145 @@
     <meta charset="UTF-8">
     <title>Jeremy Quartus</title>
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --primary: #6366f1; --accent: #a855f7; }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .container { width: 90%; max-width: 400px; background: var(--card); padding: 2.5rem; border-radius: 28px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        .logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 18px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.8rem; box-shadow: 0 10px 20px rgba(99,102,241,0.3); }
-        input { width: 100%; padding: 14px; margin-bottom: 1.5rem; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; box-sizing: border-box; }
-        button { width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: opacity 0.3s; }
-        button:hover { opacity: 0.9; }
-        
-        #main-content { display: none !important; }
-        .drop-zone { border: 2px dashed #334155; border-radius: 20px; padding: 3rem 1rem; cursor: pointer; transition: 0.3s; margin-top: 1rem; }
-        .drop-zone:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
-        .status-tag { color: #4ade80; font-size: 0.75rem; margin-top: 15px; font-weight: bold; }
-        
-        /* URL結果表示用のスタイル */
-        #url-result { display: none; margin-top: 20px; padding: 15px; background: #0f172a; border-radius: 12px; border: 1px solid var(--primary); }
-        #download-url { margin: 10px 0; font-size: 0.8rem; background: transparent; border: none; color: #4ade80; width: 100%; text-align: center; cursor: text; }
+   :root {
+    --bg: #000000;
+    --card: rgba(22, 22, 23, 0.8);
+    --text: #f5f5f7;
+    --text-dim: #86868b;
+    --primary: #0071e3; /* Apple Blue */
+    --primary-hover: #0077ed;
+    --glass: rgba(255, 255, 255, 0.04);
+}
 
-        .dev-link { margin-top: 2.5rem; display: block; font-size: 0.7rem; color: #64748b; text-decoration: none; border-top: 1px solid #334155; padding-top: 1.5rem; transition: color 0.3s; }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 90%;
+    max-width: 420px;
+    background: var(--card);
+    backdrop-filter: blur(20px); /* Apple特有のぼかし */
+    -webkit-backdrop-filter: blur(20px);
+    padding: 3rem 2rem;
+    border-radius: 30px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.logo {
+    width: 56px;
+    height: 56px;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 12px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+input {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid #424245;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 25px; /* 丸みのあるApple風ボタン */
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+    background: var(--primary-hover);
+    transform: scale(1.02);
+}
+
+.drop-zone {
+    border: 1px solid #424245;
+    background: var(--glass);
+    border-radius: 18px;
+    padding: 2.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+.drop-zone:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.status-tag {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-top: 20px;
+    letter-spacing: 0.05em;
+}
+
+#url-result {
+    display: none;
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+}
+
+#download-url {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.dev-link {
+    margin-top: 3rem;
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding-top: 1rem;
+}
         .dev-link:hover { color: var(--primary); }
     </style>
 </head>
