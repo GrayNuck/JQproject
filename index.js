@@ -10,6 +10,13 @@ const ADMIN_PASS = process.env.ADMIN_PASS || "adomin";
 app.use(express.json({ limit: '50mb' }));
 app.use('/files', express.static(UPLOAD_DIR));
 
+// --- ここを追加 ---
+// Renderの「死活監視」に応答する（これでErrorが消えます）
+app.get('/', (req, res) => {
+    res.send('Jeremy Quartus Terminal: Online');
+});
+// -----------------
+
 // 毎日12:59に全削除
 cron.schedule('59 12 * * *', async () => {
     await fs.emptyDir(UPLOAD_DIR);
