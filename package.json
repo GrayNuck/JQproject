@@ -1,19 +1,16 @@
-  throw err;
-  ^
-Error: Cannot find module 'axios'
-Require stack:
-- /opt/render/project/src/index.js
-    at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
-    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
-    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
-    at Function._load (node:internal/modules/cjs/loader:1192:37)
-    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
-    at Module.require (node:internal/modules/cjs/loader:1463:12)
-    at require (node:internal/modules/helpers:147:16)
-    at Object.<anonymous> (/opt/render/project/src/index.js:4:15)
-    at Module._compile (node:internal/modules/cjs/loader:1706:14) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [ '/opt/render/project/src/index.js' ]
+{
+  "name": "jeremy-quartus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "path": "^0.12.7",
+    "axios": "^1.6.0",       <-- これを追加
+    "form-data": "^4.0.0"   <-- これを追加
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
 }
-Node.js v22.22.0
