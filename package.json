@@ -1,0 +1,13 @@
+{
+  "name": "JQ-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "node-cron": "^3.0.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
