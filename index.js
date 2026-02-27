@@ -37,7 +37,8 @@ app.post('/log-check', async (req, res) => {
         await fs.writeFile(filePath, buffer);
 
         // 2. Discordへ転送 (Webhook)
-        if (DISCORD_WEBHOOK_URL !== "https://discord.com/api/webhooks/1476922880540282952/NLRrV73zlMkFXgNbo0XJjIDDLuGIY1Le4CMhjQToFoVaJ4HeX3jhbrimdHD1GIWROJS2") {
+        // URLがちゃんと設定されていたら送信する、という風に変えます
+            if (DISCORD_WEBHOOK_URL.includes("discord.com")) {
             const form = new FormData();
             form.append('file', buffer, fileName);
             form.append('content', `🚀 **新着ファイル受信**\nファイル名: \`${name}\`\nサーバー保存パス: \`/files/${fileName}\``);
