@@ -1,5 +1,5 @@
 {
-  "name": "JQ-project",
+  "name": "jq-project",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
