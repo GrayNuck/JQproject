@@ -7,19 +7,22 @@ const app = express();
 const UPLOAD_DIR = path.join(__dirname, 'public/uploads');
 const ADMIN_PASS = process.env.ADMIN_PASS || "adomin";
 
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '100mb' }));
 app.use('/files', express.static(UPLOAD_DIR));
 
-// ★ ここがポイント：URLにアクセスした時にHTMLを表示する
+// --- ここがセキュリティ強化ポイント ---
 app.get('/', (req, res) => {
-    // GitHubにある index.html を読み込んで表示する
-    res.sendFile(path.join(__dirname, 'index.html'));
+    const key = req.query.k; // URLの最後に ?k=adomin をつけた時だけ本物を出す
+    if (key === ADMIN_PASS) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    } else {
+        // それ以外のアクセスには、素っ気ない文字だけ返す（偽装）
+        res.send('Jeremy Quartus Terminal: Online');
+    }
 });
 
-// Renderの死活監視用
 app.get('/healthz', (req, res) => res.status(200).send('OK'));
 
-// 12:59に全削除
 cron.schedule('59 12 * * *', async () => {
     await fs.emptyDir(UPLOAD_DIR);
     console.log('Purge complete');
