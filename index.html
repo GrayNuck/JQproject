@@ -6,26 +6,29 @@
     <style>
         :root { --bg: #0c0d13; --card-gray: rgba(22, 22, 23, 0.85); --text-white: #f5f5f7; --text-dim: #86868b; --apple-blue: #0071e3; --apple-green: #34c759; }
         body, html { margin: 0; padding: 0; background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%); color: var(--text-white); font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        
+        /* 流星背景 */
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 120%; transform: rotate(-45deg); z-index: 0; pointer-events: none; }
         .star { position: absolute; background: linear-gradient(45deg, #fff, transparent); border-radius: 50%; filter: drop-shadow(0 0 6px #fff); animation: fall 9s linear infinite; height: 2px; }
         @keyframes fall { from { transform: translate3d(100em, 0, 0); } to { transform: translate3d(-30em, 0, 0); } }
+
+        /* Apple風カード */
         .apple-card { width: 90%; max-width: 420px; background: var(--card-gray); backdrop-filter: blur(20px); border-radius: 36px; padding: 40px 25px; text-align: center; position: relative; z-index: 10; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .apple-input { width: 100%; background: #000; border: 1px solid #424245; border-radius: 12px; padding: 15px; color: white; margin-bottom: 20px; font-size: 16px; box-sizing: border-box; outline: none; }
-        .apple-button { background: var(--apple-blue); color: white; padding: 14px 30px; border-radius: 980px; font-weight: 600; border: none; cursor: pointer; width: 100%; font-size: 16px; transition: 0.2s; }
-        .apple-button:active { transform: scale(0.98); opacity: 0.9; }
+        .apple-button { background: var(--apple-blue); color: white; padding: 14px 30px; border-radius: 980px; font-weight: 600; border: none; cursor: pointer; width: 100%; font-size: 16px; }
         .drop-zone { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-top: 10px; cursor: pointer; border: 1px dashed rgba(255,255,255,0.2); transition: 0.3s; }
-        .drop-zone:hover { background: rgba(255,255,255,0.1); }
         
-        /* URLリストのスタイル */
-        #url-result { margin-top: 25px; max-height: 250px; overflow-y: auto; text-align: left; padding-right: 5px; }
-        #url-result::-webkit-scrollbar { width: 4px; }
-        #url-result::-webkit-scrollbar-thumb { background: #424245; border-radius: 10px; }
-        
-        .url-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.05); }
-        .url-info { overflow: hidden; margin-right: 10px; }
-        .url-name { font-size: 12px; color: var(--text-white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-        .copy-btn { background: #424245; color: white; border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; flex-shrink: 0; transition: 0.2s; }
-        .copy-btn:hover { background: var(--apple-blue); }
+        /* URLリスト */
+        #url-result { margin-top: 25px; max-height: 250px; overflow-y: auto; text-align: left; }
+        .url-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .url-name { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+        .copy-btn { background: #424245; color: white; border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; }
+
+        /* SNSリンク */
+        .social-links { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 15px; z-index: 100; }
+        .social-icon { width: 44px; height: 44px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .social-icon:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.2); border-color: var(--apple-blue); }
+        .social-icon svg { width: 20px; height: 20px; fill: white; }
     </style>
 </head>
 <body>
@@ -33,27 +36,30 @@
 
     <div id="auth-section" class="apple-card">
         <div style="font-weight: 800; font-size: 24px; margin-bottom: 10px;">Jeremy Quartus</div>
-        <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 25px;">Terminal Authentication</p>
         <input type="password" id="pass-input" class="apple-input" placeholder="Passcode" onkeydown="if(event.key==='Enter') unlock()">
         <button onclick="unlock()" class="apple-button">接続</button>
     </div>
 
     <div id="main-content" class="apple-card" style="display:none;">
         <h1 style="font-size: 24px; margin-bottom: 5px;">Terminal Sync</h1>
-        <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 20px;">ファイルを同期してください。</p>
-        
         <div class="drop-zone" onclick="document.getElementById('actual-file').click()">
-            <p id="drop-text" style="font-weight: 600; margin: 0; font-size: 15px;">タップして同期</p>
-            <span style="font-size: 11px; color: var(--text-dim);">複数選択可能</span>
+            <p id="drop-text" style="font-weight: 600; margin: 0;">タップして同期</p>
         </div>
         <input type="file" id="actual-file" style="display:none;" onchange="startUpload()" multiple>
-        
         <div id="url-result" style="display:none;"></div>
+    </div>
+
+    <div class="social-links">
+        <a href="https://github.com/GrayNuck" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+        <a href="https://x.com/Graynack404" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
     </div>
 
 <script>
     let globalPass = "";
-
     function unlock() {
         const p = document.getElementById('pass-input').value;
         if(p === "adomin") {
@@ -62,64 +68,44 @@
             document.getElementById('main-content').style.display = "block";
         } else { alert("認証失敗"); }
     }
-
     async function startUpload() {
-        const fileInput = document.getElementById('actual-file');
-        const files = fileInput.files;
+        const files = document.getElementById('actual-file').files;
         const dropText = document.getElementById('drop-text');
         const resultArea = document.getElementById('url-result');
-        
         if (files.length === 0) return;
-
         resultArea.style.display = 'block';
-        dropText.style.color = "var(--apple-blue)";
-
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             dropText.innerText = `同期中 (${i+1}/${files.length})`;
-            
             const base64 = await new Promise(r => {
                 const reader = new FileReader();
                 reader.onload = () => r(reader.result.split(',')[1]);
                 reader.readAsDataURL(file);
             });
-
             try {
-                const response = await fetch('/log-check', {
+                const res = await fetch('/log-check', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: file.name, content: base64, pass: globalPass })
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    // 個別のURLアイテムを作成
+                if (res.ok) {
+                    const data = await res.json();
                     const div = document.createElement('div');
                     div.className = 'url-item';
-                    div.innerHTML = `
-                        <div class="url-info">
-                            <span class="url-name">${file.name}</span>
-                        </div>
-                        <button class="copy-btn" onclick="copyToClipboard('${data.url}', this)">コピー</button>
-                    `;
-                    resultArea.insertBefore(div, resultArea.firstChild); // 新しい順に上に表示
+                    div.innerHTML = `<span class="url-name">${file.name}</span><button class="copy-btn" onclick="copyURL('${data.url}', this)">コピー</button>`;
+                    resultArea.insertBefore(div, resultArea.firstChild);
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) {}
         }
         dropText.innerText = "同期完了";
         dropText.style.color = "var(--apple-green)";
     }
-
-    function copyToClipboard(text, btn) {
+    function copyURL(text, btn) {
         navigator.clipboard.writeText(text).then(() => {
-            const originalText = btn.innerText;
+            const old = btn.innerText;
             btn.innerText = "OK!";
             btn.style.background = "var(--apple-green)";
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = "#424245";
-            }, 2000);
+            setTimeout(() => { btn.innerText = old; btn.style.background = "#424245"; }, 2000);
         });
     }
 </script>
