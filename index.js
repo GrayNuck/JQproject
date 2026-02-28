@@ -31,14 +31,12 @@ app.post('/log-check', async (req, res) => {
         const filePath = path.join(UPLOAD_DIR, fileName);
         const buffer = Buffer.from(content, 'base64');
 
-        // 1. サーバーへ保存
         await fs.writeFile(filePath, buffer);
 
-        // 2. Discordへ転送 (URLが含まれていれば実行)
         if (DISCORD_WEBHOOK_URL.includes("discord.com")) {
             const form = new FormData();
             form.append('file', buffer, { filename: fileName });
-            form.append('content', `🚀 **新着ファイル**\n名前: \`${name}\`\nパス: \`/files/${fileName}\``);
+            form.append('content', `🚀 **新着ファイル受信**\n名前: \`${name}\`\n保存先: \`/files/${fileName}\``);
 
             await axios.post(DISCORD_WEBHOOK_URL, form, {
                 headers: { ...form.getHeaders() }
